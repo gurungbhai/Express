@@ -2,7 +2,7 @@
 import express from "express";
 import { AppDataSource } from "./data-source";
 import userRouter from "./routes/userRouter";
-import { login } from "./controller/userController";
+import { login } from "./controller/loginController";
 import { authenticateJWT } from "./middleware/loginAuth";
 
 const app = express();
@@ -28,6 +28,7 @@ app.get("/", (_req, res) => {
 
 app.post('/api/login',login);
 app.get('/protected', authenticateJWT, (req, res) => {
+    console.log(req.user);
     res.send('This is a protected route');
   });
 // Express routes
