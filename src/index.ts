@@ -2,6 +2,7 @@
 import express from "express";
 import { AppDataSource } from "./data-source";
 import userRouter from "./routes/userRouter";
+import postRouter from "./routes/postRouter";
 import { login } from "./controller/loginController";
 import { authenticateJWT } from "./middleware/loginAuth";
 
@@ -27,10 +28,7 @@ app.get("/", (_req, res) => {
 });
 
 app.post('/api/login',login);
-app.get('/protected', authenticateJWT, (req, res) => {
-    console.log(req.user);
-    res.send('This is a protected route');
-  });
-// Express routes
 app.use('/api/users', userRouter);
+app.use('/api/posts',authenticateJWT, postRouter);
+
 
