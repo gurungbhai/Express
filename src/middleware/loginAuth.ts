@@ -12,7 +12,7 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
 
         jwt.verify(token, 'your_jwt_secret', (err, user) => {
             if (err) {
-                return res.sendStatus(403);
+                return res.status(401).json({ msg: 'Unauthorized' });
             }
 
             req.user = user as User; 

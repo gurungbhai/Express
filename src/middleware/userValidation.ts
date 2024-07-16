@@ -1,6 +1,5 @@
 // src/middleware/validateUser.ts
 import { body, validationResult } from 'express-validator';
-import { AppDataSource } from '../data-source';
 import { User } from '../entity/User';
 import { Request, Response, NextFunction } from 'express';
 
