@@ -41,14 +41,38 @@ export const getUser = async (req: Request, res: Response) => {
 }
 
 export const updateUser = async (req: Request, res: Response) => {
-    const userId = Number(req.params.id);
-    //     const user = await User.findOneOrFail(userId);
-    //     User.merge(user, req.body);
-    //     const result = await User.save(user);
-    //     res.json(result);
+    try {
+        // Find the user by ID
+        const user = await User.findOneBy({ id: parseInt(req.params.id) });
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Merge the request body with the found user
+        const updatedUser = User.merge(user, req.body);
+
+        // Save the updated user back to the database
+        const result = await User.save(updatedUser);
+
+        // Return the updated user
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Internal server error' });
+    }
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
-    const result = await User.delete(req.params.id);
-    res.json(result);
+    try {
+        const user = await User.findOneBy({ id: parseInt(req.params.id) });
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+        const result = await User.delete(req.params.id);
+        res.json({ msg: 'user has been delete' });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Internal server error' });
+    }
 }
